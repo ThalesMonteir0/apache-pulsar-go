@@ -6,9 +6,14 @@ import (
 )
 
 func main() {
+	forever := make(chan bool)
+
 	client := producer.OpenConnectPulsar()
 	defer client.Close()
 
-	consumer.ConsumerPulsar(client, "teste", "teste-1")
+	go consumer.ConsumerPulsar(client, "teste", "teste-1", 1)
+	go consumer.ConsumerPulsar(client, "teste", "teste-1", 2)
+
+	<-forever
 
 }

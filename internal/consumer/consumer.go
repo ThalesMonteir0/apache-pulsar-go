@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func ConsumerPulsar(client pulsar.Client, topic, subscriptionName string) {
+func ConsumerPulsar(client pulsar.Client, topic, subscriptionName string, instancia int) {
 	consumer, err := client.Subscribe(pulsar.ConsumerOptions{
 		Topic:            topic,
 		SubscriptionName: subscriptionName,
@@ -25,7 +25,12 @@ func ConsumerPulsar(client pulsar.Client, topic, subscriptionName string) {
 			log.Fatalf("Failed to receive message: %v", err)
 		}
 
-		fmt.Printf("msgID: %d. Msg payload: %s", msg.ID(), string(msg.Payload()))
+		fmt.Printf("msgID: %d. Msg payload: %s. subscriptionName: %s. instancia: %d \n",
+			msg.ID(),
+			string(msg.Payload()),
+			subscriptionName,
+			instancia)
+
 		consumer.Ack(msg)
 	}
 }
